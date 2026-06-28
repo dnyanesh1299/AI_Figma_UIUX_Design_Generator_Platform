@@ -19,7 +19,10 @@
 
 <br />
 
-<img src="./screenshots/prompt_studio_preview.png" alt="AI Figma Prompt Studio Screenshot" width="800" />
+<img src="./screenshots/Screenshot (380).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
+<img src="./screenshots/Screenshot (381).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
+<img src="./screenshots/Screenshot (382).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
+<img src=".screenshots/Screenshot (384).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 
 <br />
 
