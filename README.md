@@ -498,13 +498,7 @@ testimonials  ·  pricing-card  ·  timeline  ·  stats-row
 
 > All exports except Figma are generated **entirely in the browser** — zero server disk writes.
 
-### Figma Direct Export Integration
 
-<div align="center">
-  <img src="./screenshots/figma_integration_preview.png" alt="Figma Direct Publishing Integration" width="700" />
-</div>
-
----
 
 ## 🚦 Getting Started
 
