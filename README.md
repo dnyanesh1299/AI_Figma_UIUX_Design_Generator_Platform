@@ -18,9 +18,9 @@
 </p>
    
 <br />
- ## Home Page
+  Home Page
 <img src="./screenshots/Screenshot (380).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
- ## project Section
+ ## Project Section
 <img src="./screenshots/Screenshot (381).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 ## Export Section
 <img src="./screenshots/Screenshot (382).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
