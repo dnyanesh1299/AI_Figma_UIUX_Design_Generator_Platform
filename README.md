@@ -20,11 +20,11 @@
 <br />
   Home Page
 <img src="./screenshots/Screenshot (380).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
- ## Project Section
+  Project Section
 <img src="./screenshots/Screenshot (381).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
-## Export Section
+ Export Section
 <img src="./screenshots/Screenshot (382).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
-## Explore Section
+ Explore Section
 <img src="./screenshots/Screenshot (384).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 
 <br />
