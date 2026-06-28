@@ -16,13 +16,13 @@
   <strong>Describe a UI in plain English. Get a fully framed, multi-device, production-ready design.</strong><br />
   No Figma expertise required. No coding. Just your idea.
 </p>
-
+x   
 <br />
 
 <img src="./screenshots/Screenshot (380).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 <img src="./screenshots/Screenshot (381).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 <img src="./screenshots/Screenshot (382).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
-<img src=".screenshots/Screenshot (384).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
+<img src="./screenshots/Screenshot (384).png" alt="AI Figma Prompt Studio Screenshot" width="800" />
 
 <br />
 
