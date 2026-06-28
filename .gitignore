@@ -1,0 +1,63 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Local environment configuration (contains credentials and secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+server/.env
+server/.env.local
+server/.env.*
+!.env.example
+!server/.env.example
+
+# Build and distribution directories
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# IDEs and editors configuration
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and databases
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.db
+*.sqlite
+
+# Testing and Coverage
+coverage/
+.nyc_output/
+cypress/screenshots/
+cypress/videos/
+
+# Temporary and generated schemas / test outputs
+server/schema.json

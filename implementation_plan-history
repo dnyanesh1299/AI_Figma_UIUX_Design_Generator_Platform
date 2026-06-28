@@ -1,0 +1,125 @@
+# Design Generation History — Implementation Plan
+
+This feature saves the history of each design generation (prompt, classification, and output UI schema) so that users can instantly load, review, and make further changes to past designs. It includes persistent database storage on the backend and a robust fallback to local storage on the client.
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Automatic Database Saving**: When a user generates a layout, the system will automatically save it to their persistent history if they are logged in. 
+> 
+> **Resiliency Fallback**: If the database migration is not yet run or PostgreSQL is temporarily unavailable, the system will gracefully fall back to storing history in the user's browser `localStorage`. This ensures zero downtime or blocking errors for the generation workflow.
+
+---
+
+## Open Questions
+
+There are no major open questions, as the backend PostgreSQL database is active and reachable on `localhost:5432` with existing migrations applied. We will proceed with Prisma migrations directly.
+
+---
+
+## Proposed Changes
+
+### Database
+
+#### [MODIFY] [schema.prisma](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/prisma/schema.prisma)
+Add a `GenerationHistory` model to store the history of prompts, classifications, and generated JSON schemas. Integrate it with the `User` model.
+
+```prisma
+model User {
+  // Existing fields...
+  exports   Export[]
+  history   GenerationHistory[] // Added relation
+
+  @@map("users")
+}
+
+model GenerationHistory {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  prompt         String
+  classification Json?
+  schema         Json
+  createdAt      DateTime @default(now()) @map("created_at")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("generation_histories")
+}
+```
+
+---
+
+### Backend Services & Controllers
+
+#### [NEW] [history.service.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/services/history.service.js)
+Create helper methods to retrieve, save, and delete design history items using the Prisma client:
+- `getUserHistory(userId, limit)`: Retrieves the history sorted by creation time.
+- `saveUserGeneration(userId, prompt, classification, schema)`: Saves the generated prompt and UI schema.
+- `deleteHistoryItem(userId, historyId)`: Deletes an entry.
+
+#### [NEW] [history.controller.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/controllers/history.controller.js)
+Create controllers for the design history endpoints:
+- `getHistoryController(req, res, next)`: Fetches user history.
+- `deleteHistoryController(req, res, next)`: Deletes a specific history record.
+
+#### [MODIFY] [design.controller.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/controllers/design.controller.js)
+Automatically save generations to history if the generating user is authenticated.
+
+---
+
+### Backend Routes
+
+#### [NEW] [history.routes.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/routes/history.routes.js)
+Create routes under `/api/history` protected by authentication:
+- `GET /api/history`
+- `DELETE /api/history/:id`
+
+#### [MODIFY] [index.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/routes/index.js)
+Register `/api/history` routes and wrap them in authentication:
+```javascript
+import historyRoutes from "./history.routes.js";
+router.use("/history", requireAuth, historyRoutes);
+```
+
+#### [MODIFY] [design.routes.js](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/server/src/routes/design.routes.js)
+Add `requireAuth` to the `/generate-design` route to ensure we can identify the generating user and store their history.
+
+---
+
+### Frontend UI Components
+
+#### [MODIFY] [PromptStudioPage.jsx](file:///c:/dnyanesh/AI_Figma_UIUX_Design_Generator_Platform/src/pages/PromptStudioPage.jsx)
+Upgrade the Prompt Studio page:
+1. **State Management**:
+   - Add `history` and `historyLoading` state.
+   - Fetch the history from the backend (`GET /api/history`) upon mount.
+   - Fall back to `localStorage` under key `design_generation_history` if the request fails.
+2. **Auto-save & Update**:
+   - On successful layout generation, prepend the new design (prompt, classification, schema) to the history state and save it (both via API call and localStorage).
+3. **Load History Functionality**:
+   - Clicking a history item instantly loads the corresponding `prompt`, `schema`, and `classification` into the studio canvas.
+4. **Delete Item Functionality**:
+   - Call the delete API (`DELETE /api/history/:id`) and update the local state.
+5. **New UI Section**:
+   - Design a sleek, premium glassmorphic "Generation History" panel in the left-hand column.
+   - Displays history cards containing the prompt snippet, relative generation time (e.g. "Just now", "2 mins ago"), badges for theme/platform, and a quick delete button.
+
+---
+
+## Verification Plan
+
+### Automated Database Tests
+- Run `npx prisma migrate dev` to verify the schema updates compile and apply cleanly.
+- Run `npx prisma generate` to check that client files are generated correctly.
+
+### Manual Verification
+1. **Load Page & Empty State**: Navigate to Prompt Studio and verify that the "Generation History" card is displayed, showing an empty state message if no history exists.
+2. **Save on Generate**: Type a prompt, click **Generate UI Layout**, verify that:
+   - The design is rendered on the canvas.
+   - A new card is added to the "Generation History" panel with the prompt text and correct timestamp.
+3. **Instant Loading**: Generate multiple designs. Click on a past design card in the history panel. Verify that the prompt, classification results, and canvas UI are immediately replaced by the past design's parameters.
+4. **Delete Record**: Click the delete icon on a history card. Confirm that it disappears from the list.
+5. **Resiliency Fallback**: Temporarily stop the backend server or simulate an offline network. Verify that the frontend continues to log history successfully to localStorage and does not throw blocking crashes.

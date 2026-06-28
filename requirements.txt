@@ -1,0 +1,30 @@
+# AI Figma UI/UX Design Generator Platform - Project Dependencies
+
+## New Dependencies (Backend)
+- axios@^1.7.9 (HTTP client for OpenRouter API)
+
+## Existing Dependencies (Backend - Express Server)
+- @prisma/client@^5.19.1
+- bcryptjs@^2.4.3
+- cookie-parser@^1.4.7
+- cors@^2.8.5
+- dotenv@^16.4.7
+- express@^4.21.2
+- express-rate-limit@^7.4.1
+- helmet@^8.0.0
+- jsonwebtoken@^9.0.2
+- nodemailer@^6.10.0
+- passport@^0.7.0
+- passport-github2@^0.1.12
+- passport-google-oauth20@^2.0.0
+- zod@^3.23.8
+- prisma@^5.19.1 (Dev Dependency)
+
+## Existing Dependencies (Frontend - React + Vite)
+- @prisma/client@^7.8.0
+- react@^18.3.1
+- react-dom@^18.3.1
+- react-router-dom@^6.28.1
+- @vitejs/plugin-react@^4.3.4 (Dev Dependency)
+- prisma@^7.8.0 (Dev Dependency)
+- vite@^5.4.10 (Dev Dependency)
